@@ -37,38 +37,53 @@ package com.yourcompany.android.jetpackcompose.screens
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.yourcompany.android.jetpackcompose.R
 import com.yourcompany.android.jetpackcompose.router.BackButtonHandler
 import com.yourcompany.android.jetpackcompose.router.JetFundamentalsRouter
 import com.yourcompany.android.jetpackcompose.router.Screen
 
 @Composable
 fun ScrollingScreen() {
-  MyScrollingScreen()
+    MyScrollingScreen()
 
-  BackButtonHandler {
-    JetFundamentalsRouter.navigateTo(Screen.Navigation)
-  }
+    BackButtonHandler {
+        JetFundamentalsRouter.navigateTo(Screen.Navigation)
+    }
+}
+
+@Preview
+@Composable
+fun MyScrollingScreenPreview() {
+    MyScrollingScreen()
 }
 
 @Composable
-fun MyScrollingScreen() {
-  //TODO add your code here
+fun MyScrollingScreen(modifier: Modifier = Modifier) {
+    Column(modifier = modifier.verticalScroll(rememberScrollState())) {
+        BookImage(R.drawable.advanced_architecture_android, R.string.advanced_architecture_android)
+        BookImage(R.drawable.kotlin_aprentice, R.string.kotlin_apprentice)
+        BookImage(R.drawable.kotlin_coroutines, R.string.kotlin_coroutines)
+    }
 }
 
 @Composable
 fun BookImage(@DrawableRes imageResId: Int, @StringRes contentDescriptionResId: Int) {
-  Image(
-    bitmap = ImageBitmap.imageResource(imageResId),
-    contentDescription = stringResource(contentDescriptionResId),
-    contentScale = ContentScale.FillBounds,
-    modifier = Modifier.size(476.dp, 616.dp)
-  )
+    Image(
+        bitmap = ImageBitmap.imageResource(imageResId),
+        contentDescription = stringResource(contentDescriptionResId),
+        contentScale = ContentScale.FillBounds,
+        modifier = Modifier.size(476.dp, 616.dp)
+    )
 }
