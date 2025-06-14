@@ -67,7 +67,7 @@ fun MyRowPreview() {
 }
 
 @Composable
-fun MyRow() {
+fun MyRow(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
