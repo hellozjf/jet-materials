@@ -18,15 +18,13 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NoteColor(
+    modifier: Modifier = Modifier,
     color: Color,
     size: Dp,
-    padding: Dp = 0.dp,
     border: Dp
 ) {
     Box(
-        modifier = Modifier
-            // 先设置外边距
-            .padding(padding)
+        modifier = modifier
             // 然后设置内部大小
             .size(size)
             // 这里设置 padding 的话，就是设置内边距了
@@ -53,7 +51,6 @@ fun NoteColorPreview() {
     NoteColor(
         color = Color.Red,
         size = 40.dp,
-        padding = 4.dp,
         border = 2.dp
     )
 }
