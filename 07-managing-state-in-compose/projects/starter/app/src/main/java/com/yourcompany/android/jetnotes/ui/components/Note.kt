@@ -49,10 +49,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yourcompany.android.jetnotes.data.database.model.ColorDbModel
+import com.yourcompany.android.jetnotes.domain.model.ColorModel
+import com.yourcompany.android.jetnotes.domain.model.NoteModel
 import com.yourcompany.android.jetnotes.theme.green
+import com.yourcompany.android.jetnotes.util.fromHex
 
 @Composable
-fun Note() {
+fun Note(
+  note: NoteModel,
+  onNoteClick: (NoteModel) -> Unit = {},
+  onNoteCheckedChange: (NoteModel) -> Unit = {}
+) {
   val backgroundShape: Shape = RoundedCornerShape(4.dp)
 
   Row(
@@ -67,7 +75,7 @@ fun Note() {
       modifier = Modifier
         .align(Alignment.CenterVertically)
         .padding(start = 16.dp, end = 16.dp),
-      color = green,
+      color = Color.fromHex(note.color.hex),
       size = 40.dp,
       border = 1.dp
     )
@@ -77,7 +85,7 @@ fun Note() {
         .align(Alignment.CenterVertically)
     ) {
       Text(
-        text = "Title",
+        text = note.title,
         color = Color.Black,
         maxLines = 1,
         style = TextStyle(
@@ -87,7 +95,7 @@ fun Note() {
         )
       )
       Text(
-        text = "Content",
+        text = note.content,
         color = Color.Black.copy(alpha = 0.75f),
         maxLines = 1,
         style = TextStyle(
@@ -97,18 +105,34 @@ fun Note() {
         )
       )
     }
-    Checkbox(
-      checked = false,
-      onCheckedChange = { },
-      modifier = Modifier
-        .padding(16.dp)
-        .align(Alignment.CenterVertically)
-    )
+    note.isCheckedOff?.let { isCheckedOff ->
+      Checkbox(
+        checked = isCheckedOff,
+        onCheckedChange = { },
+        modifier = Modifier
+          .padding(horizontal = 16.dp)
+          .align(Alignment.CenterVertically)
+      )
+    }
   }
 }
 
 @Preview
 @Composable
 private fun NotePreview() {
-  Note()
+  Note(
+    note = NoteModel(
+      id = 1,
+      title = "标题",
+      content = "我是内容",
+      isCheckedOff = false,
+      color = ColorDbModel.DEFAULT_COLORS[3].run {
+        ColorModel(
+          id = id,
+          name = name,
+          hex = hex
+        )
+      }
+    )
+  )
 }
