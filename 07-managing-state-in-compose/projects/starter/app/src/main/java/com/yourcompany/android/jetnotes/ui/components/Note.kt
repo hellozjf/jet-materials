@@ -34,6 +34,7 @@
 package com.yourcompany.android.jetnotes.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Checkbox
@@ -70,6 +71,7 @@ fun Note(
       .fillMaxWidth()
       .heightIn(min = 64.dp)
       .background(Color.White, backgroundShape)
+      .clickable(onClick = { onNoteClick(note) })
   ) {
     NoteColor(
       modifier = Modifier
@@ -108,7 +110,10 @@ fun Note(
     note.isCheckedOff?.let { isCheckedOff ->
       Checkbox(
         checked = isCheckedOff,
-        onCheckedChange = { },
+        onCheckedChange = { isChecked ->
+          val newNote = note.copy(isCheckedOff = isChecked)
+          onNoteCheckedChange(newNote)
+        },
         modifier = Modifier
           .padding(horizontal = 16.dp)
           .align(Alignment.CenterVertically)
