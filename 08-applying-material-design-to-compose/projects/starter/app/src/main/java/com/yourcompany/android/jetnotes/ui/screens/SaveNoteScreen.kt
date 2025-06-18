@@ -86,15 +86,24 @@ fun SaveNoteScreen(
       SaveNoteTopAppBar(
         isEditingMode = isEditingMode,
         onBackClick = onNavigateBack,
-        onSaveNoteClick = {},
+        onSaveNoteClick = {
+          viewModel.saveNote(noteEntry)
+          onNavigateBack()
+        },
         onOpenColorPickerClick = {},
-        onDeleteNoteClick = {}
+        onDeleteNoteClick = {
+          viewModel.moveNoteToTrash(noteEntry)
+          onNavigateBack()
+        }
       )
     }
   ) { paddingValues ->
-    Text(
-      text = "Styled Text",
-      modifier = Modifier.padding(paddingValues)
+    SaveNoteContent(
+      modifier = Modifier.padding(paddingValues),
+      note = noteEntry,
+      onNoteChange = { updateNoteEntry ->
+        viewModel.onNoteEntryChange(updateNoteEntry)
+      }
     )
   }
 }
@@ -339,6 +348,7 @@ fun ContentTextFieldPreview() {
 
 @Composable
 private fun SaveNoteContent(
+  modifier: Modifier = Modifier,
   note: NoteModel,
   onNoteChange: (NoteModel) -> Unit
 ) {
