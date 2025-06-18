@@ -33,13 +33,17 @@
  */
 package com.yourcompany.android.jetnotes.ui.screens
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.yourcompany.android.jetnotes.domain.model.NoteModel
 import com.yourcompany.android.jetnotes.ui.components.Note
@@ -47,20 +51,34 @@ import com.yourcompany.android.jetnotes.ui.components.TopAppBar
 import com.yourcompany.android.jetnotes.viewmodel.MainViewModel
 
 @Composable
-fun NotesScreen(viewModel: MainViewModel) {
+fun NotesScreen(
+  viewModel: MainViewModel,
+  onOpenNavigationDrawer: () -> Unit = {}
+) {
   val notes: List<NoteModel> by viewModel
     .notesNotInTrash
     .observeAsState(listOf())
-  Column {
-    TopAppBar(
-      title = "JetNotes",
-      icon = Icons.Filled.List,
-      onIconClick = {}
-    )
+
+  val scaffoldState: ScaffoldState = rememberScaffoldState()
+
+  Scaffold(
+    scaffoldState = scaffoldState,
+    topBar = {
+      TopAppBar(
+        title = "JetNotes",
+        icon = Icons.Filled.List,
+        onIconClick = {
+          onOpenNavigationDrawer()
+        }
+      )
+    }
+  ) { paddingValues ->
     NotesList(
       notes = notes,
       onNoteCheckedChange = { viewModel.onNoteCheckedChange(it) },
-      onNoteClick = { viewModel.onNoteClick(it) }
+      onNoteClick = { viewModel.onNoteClick(it) },
+      modifier = Modifier
+        .padding(paddingValues)
     )
   }
 }
@@ -69,7 +87,8 @@ fun NotesScreen(viewModel: MainViewModel) {
 private fun NotesList(
   notes: List<NoteModel>,
   onNoteCheckedChange: (NoteModel) -> Unit,
-  onNoteClick: (NoteModel) -> Unit
+  onNoteClick: (NoteModel) -> Unit,
+  modifier: Modifier = Modifier
 ) {
   LazyColumn {
     items(count = notes.size) { noteIndex ->

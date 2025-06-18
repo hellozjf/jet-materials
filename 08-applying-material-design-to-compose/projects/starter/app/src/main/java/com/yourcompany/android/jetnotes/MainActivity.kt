@@ -95,7 +95,16 @@ class MainActivity : AppCompatActivity() {
               navController = navController,
               startDestination = Screen.Notes.route
             ) {
-              composable(Screen.Notes.route) { NotesScreen(viewModel) }
+              composable(Screen.Notes.route) {
+                NotesScreen(
+                  viewModel = viewModel,
+                  onOpenNavigationDrawer = {
+                    coroutineScope.launch {
+                      scaffoldState.drawerState.open()
+                    }
+                  }
+                )
+              }
             }
           }
         )
