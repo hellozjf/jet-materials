@@ -35,9 +35,13 @@ package com.yourcompany.android.jetnotes.ui.screens
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -53,7 +57,8 @@ import com.yourcompany.android.jetnotes.viewmodel.MainViewModel
 @Composable
 fun NotesScreen(
   viewModel: MainViewModel,
-  onOpenNavigationDrawer: () -> Unit = {}
+  onOpenNavigationDrawer: () -> Unit = {},
+  onNavigateToSaveNote: () -> Unit = {}
 ) {
   val notes: List<NoteModel> by viewModel
     .notesNotInTrash
@@ -69,6 +74,21 @@ fun NotesScreen(
         icon = Icons.Filled.List,
         onIconClick = {
           onOpenNavigationDrawer()
+        }
+      )
+    },
+    floatingActionButton = {
+      FloatingActionButton(
+        onClick = {
+          viewModel.onCreateNewNoteClick()
+          onNavigateToSaveNote()
+        },
+        contentColor = MaterialTheme.colors.background,
+        content = {
+          Icon(
+            imageVector = Icons.Filled.Add,
+            contentDescription = "Add Note Button"
+          )
         }
       )
     }
