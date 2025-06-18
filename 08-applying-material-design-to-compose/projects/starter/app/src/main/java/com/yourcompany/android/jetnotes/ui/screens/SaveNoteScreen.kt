@@ -36,7 +36,9 @@ package com.yourcompany.android.jetnotes.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
@@ -332,5 +334,52 @@ fun ContentTextFieldPreview() {
     label = "Title",
     text = "",
     onTextChange = {}
+  )
+}
+
+@Composable
+private fun SaveNoteContent(
+  note: NoteModel,
+  onNoteChange: (NoteModel) -> Unit
+) {
+  Column(modifier = Modifier.fillMaxSize()) {
+    ContentTextField(
+      label = "Title",
+      text = note.title,
+      onTextChange = { title ->
+        onNoteChange(note.copy(title = title))
+      }
+    )
+    ContentTextField(
+      modifier = Modifier
+        .heightIn(max = 240.dp)
+        .padding(top = 16.dp),
+      label = "Body",
+      text = note.content,
+      onTextChange = { content ->
+        onNoteChange(note.copy(content = content))
+      }
+    )
+
+    val canBeCheckedOff: Boolean = note.isCheckedOff != null
+    NoteCheckOption(
+      isChecked = canBeCheckedOff,
+      onCheckedChange = { isCheckedOff ->
+        onNoteChange(note.copy(isCheckedOff = isCheckedOff))
+      }
+    )
+
+    PickedColor(color = note.color)
+  }
+}
+
+@Preview(
+  showBackground = true
+)
+@Composable
+fun SaveNoteContentPreview() {
+  SaveNoteContent(
+    note = NoteModel(title = "Title", content = "Content"),
+    onNoteChange = {}
   )
 }
