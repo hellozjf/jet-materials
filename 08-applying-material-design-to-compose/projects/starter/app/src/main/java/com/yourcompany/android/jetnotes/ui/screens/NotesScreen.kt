@@ -96,7 +96,10 @@ fun NotesScreen(
     NotesList(
       notes = notes,
       onNoteCheckedChange = { viewModel.onNoteCheckedChange(it) },
-      onNoteClick = { viewModel.onNoteClick(it) },
+      onNoteClick = {
+        viewModel.onNoteClick(it)
+        onNavigateToSaveNote()
+      },
       modifier = Modifier
         .padding(paddingValues)
     )

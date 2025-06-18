@@ -66,11 +66,11 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
   val selectedNotes: LiveData<List<NoteModel>> = _selectedNotes.asLiveData()
 
   fun onCreateNewNoteClick() {
-    // TODO - Open SaveNoteScreen
+    _noteEntry.value = NoteModel()
   }
 
   fun onNoteClick(note: NoteModel) {
-    // TODO - Open SaveNoteScreen in Edit mode
+    _noteEntry.value = note
   }
 
   fun onNoteCheckedChange(note: NoteModel) {
