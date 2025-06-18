@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -61,12 +62,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yourcompany.android.jetnotes.R
 import com.yourcompany.android.jetnotes.domain.model.ColorModel
+import com.yourcompany.android.jetnotes.domain.model.NEW_NOTE_ID
 import com.yourcompany.android.jetnotes.domain.model.NoteModel
 import com.yourcompany.android.jetnotes.ui.components.NoteColor
 import com.yourcompany.android.jetnotes.util.fromHex
 import com.yourcompany.android.jetnotes.viewmodel.MainViewModel
-import androidx.compose.runtime.getValue
-import com.yourcompany.android.jetnotes.domain.model.NEW_NOTE_ID
 
 @Composable
 fun SaveNoteScreen(
@@ -161,6 +161,36 @@ private fun SaveNoteTopAppBar(
       }
     }
   )
+}
+
+@Composable
+private fun PickedColor(color: ColorModel) {
+  Row(
+    Modifier
+      .padding(8.dp)
+      .padding(top = 16.dp)
+  ) {
+    Text(
+      text = "Picked color",
+      modifier = Modifier
+        .weight(1f)
+        .align(Alignment.CenterVertically)
+    )
+    NoteColor(
+      color = Color.fromHex(color.hex),
+      size = 40.dp,
+      border = 1.dp,
+      modifier = Modifier.padding(4.dp)
+    )
+  }
+}
+
+@Preview(
+  showBackground = true
+)
+@Composable
+fun PickedColorPreview() {
+  PickedColor(ColorModel.DEFAULT)
 }
 
 @Composable
