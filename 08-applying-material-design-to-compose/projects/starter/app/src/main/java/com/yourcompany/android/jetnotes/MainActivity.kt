@@ -39,6 +39,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -97,16 +98,24 @@ class MainActivity : AppCompatActivity() {
               onScreenSelected = { screen ->
                 navController.navigate(screen.route) {
                   // 弹出窗口以直接跳转至目标界面，从而避免每次选择屏幕时都重新构建层级结构
+                  // 假如起始页面是 A
+                  // 当前栈是：A
+                  // 跳转到 B 之后，当前栈是：A -> B
+                  // 跳转到 C 之后，当前栈是：A -> C，因为 popUpTo 只保留了 A
                   popUpTo(
                     navController.graph.findStartDestination().id
                   ) {
+                    // 这个参数的意思是，如果页面被弹出了，把该页面的状态保存下来
                     saveState = true
                   }
 
                   // 防止同一目的地的重复复制以及同一屏幕的重复复制
+                  // 假如当前栈是：A -> B
+                  // 跳转到 A 之后，当前栈是：A，不会变成 A -> A
                   launchSingleTop = true
 
                   // 在选择之前选中的屏幕时恢复其状态
+                  // 这个参数的意思是，如果页面被弹出前记录过状态，那么就恢复状态
                   restoreState = true
                 }
                 coroutineScope.launch {

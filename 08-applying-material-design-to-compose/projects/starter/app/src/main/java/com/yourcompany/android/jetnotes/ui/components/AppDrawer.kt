@@ -204,7 +204,7 @@ fun AppDrawer(
       label = "Notes",
       isSelected = currentScreen == Screen.Notes,
       onClick = {
-        onScreenSelected.invoke(Screen.Notes)
+        onScreenSelected(Screen.Notes)
       }
     )
     ScreenNavigationButton(
@@ -212,7 +212,7 @@ fun AppDrawer(
       label = "Trash",
       isSelected = currentScreen == Screen.Trash,
       onClick = {
-        onScreenSelected.invoke(Screen.Trash)
+        onScreenSelected(Screen.Trash)
       }
     )
     LightDarkThemeItem()
