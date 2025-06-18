@@ -55,6 +55,9 @@ class MainViewModel(private val repository: Repository) : ViewModel() {
     repository.getAllNotesNotInTrash().asLiveData()
   }
 
+  private var _noteEntry = MutableStateFlow<NoteModel>(NoteModel())
+  val noteEntry: LiveData<NoteModel> = _noteEntry.asLiveData()
+
   val notesInTrash: LiveData<List<NoteModel>> by lazy {
     repository.getAllNotesInTrash().asLiveData()
   }

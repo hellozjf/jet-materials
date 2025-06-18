@@ -50,6 +50,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -60,17 +61,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yourcompany.android.jetnotes.R
 import com.yourcompany.android.jetnotes.domain.model.ColorModel
+import com.yourcompany.android.jetnotes.domain.model.NoteModel
 import com.yourcompany.android.jetnotes.ui.components.NoteColor
 import com.yourcompany.android.jetnotes.util.fromHex
 import com.yourcompany.android.jetnotes.viewmodel.MainViewModel
+import androidx.compose.runtime.getValue
+import com.yourcompany.android.jetnotes.domain.model.NEW_NOTE_ID
 
 @Composable
 fun SaveNoteScreen(
   viewModel: MainViewModel,
   onNavigateBack: () -> Unit = {}
 ) {
+  val noteEntry: NoteModel by viewModel.noteEntry.observeAsState(NoteModel())
+
   Scaffold(
-    topBar = {}
+    topBar = {
+      val isEditingMode: Boolean = noteEntry.id != NEW_NOTE_ID
+      SaveNoteTopAppBar(
+        isEditingMode = isEditingMode,
+        onBackClick = onNavigateBack,
+        onSaveNoteClick = {},
+        onOpenColorPickerClick = {},
+        onDeleteNoteClick = {}
+      )
+    }
   ) { paddingValues ->
     Text(
       text = "Styled Text",
