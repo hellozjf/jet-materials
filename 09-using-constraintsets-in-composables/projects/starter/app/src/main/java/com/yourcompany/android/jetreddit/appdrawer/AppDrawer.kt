@@ -51,7 +51,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
@@ -69,7 +71,18 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.yourcompany.android.jetreddit.R
 import com.yourcompany.android.jetreddit.routing.Screen
+import com.yourcompany.android.jetreddit.theme.JetRedditTheme
 import com.yourcompany.android.jetreddit.theme.JetRedditThemeSettings
+
+@Preview(showBackground = true)
+@Composable
+private fun AppDrawerPreview() {
+  JetRedditTheme {
+    AppDrawer(
+      onScreenSelected = {}
+    )
+  }
+}
 
 /**
  * Represents root composable for the app drawer used in screens
@@ -121,6 +134,9 @@ private fun AppDrawerHeader() {
       text = stringResource(R.string.default_username),
       color = MaterialTheme.colors.primaryVariant
     )
+
+    ProfileInfo()
+
     Divider(
       modifier = Modifier.padding(
         start = 16.dp,
@@ -129,8 +145,6 @@ private fun AppDrawerHeader() {
       ),
       color = MaterialTheme.colors.onSurface.copy(alpha = .2f)
     )
-
-    ProfileInfo()
   }
 }
 
@@ -237,6 +251,14 @@ private fun ProfileInfoItem(
   }
 }
 
+@Preview(showBackground = true)
+@Composable
+private fun AppDrawerBodyPreview() {
+  AppDrawerBody(
+    onScreenSelected = {}
+  )
+}
+
 /**
  * Represents app drawer actions:
  * * screen navigation
@@ -246,7 +268,22 @@ private fun ProfileInfoItem(
 private fun AppDrawerBody(
   onScreenSelected: (Screen) -> Unit
 ) {
-  //TODO add your code here
+  Column {
+    ScreenNavigationButton(
+      icon = Icons.Filled.AccountBox,
+      label = stringResource(R.string.my_profile),
+      onClickAction = {
+        onScreenSelected(Screen.MyProfile)
+      }
+    )
+    ScreenNavigationButton(
+      icon = Icons.Filled.Home,
+      label = stringResource(R.string.saved),
+      onClickAction = {
+        onScreenSelected(Screen.Subscriptions)
+      }
+    )
+  }
 }
 
 /**
