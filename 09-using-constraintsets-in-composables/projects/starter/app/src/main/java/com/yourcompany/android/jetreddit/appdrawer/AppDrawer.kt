@@ -129,6 +129,8 @@ private fun AppDrawerHeader() {
       ),
       color = MaterialTheme.colors.onSurface.copy(alpha = .2f)
     )
+
+    ProfileInfo()
   }
 }
 
