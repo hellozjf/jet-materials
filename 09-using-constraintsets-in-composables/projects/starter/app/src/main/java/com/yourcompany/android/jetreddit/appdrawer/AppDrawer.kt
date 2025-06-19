@@ -35,7 +35,15 @@ package com.yourcompany.android.jetreddit.appdrawer
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -45,6 +53,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +66,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.yourcompany.android.jetreddit.R
 import com.yourcompany.android.jetreddit.routing.Screen
 import com.yourcompany.android.jetreddit.theme.JetRedditThemeSettings
@@ -122,9 +132,57 @@ private fun AppDrawerHeader() {
   }
 }
 
+@Preview(showBackground = true)
 @Composable
-fun ProfileInfo() {
-  //TODO add your code here
+private fun ProfileInfoPreview() {
+  ProfileInfo()
+}
+
+@Composable
+fun ProfileInfo(
+  modifier: Modifier = Modifier
+) {
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxWidth()
+      .padding(top = 16.dp)
+  ) {
+    val (karmaItem, divider, ageItem) = createRefs()
+    val colors = MaterialTheme.colors
+
+    ProfileInfoItem(
+      iconAsset = Icons.Filled.Star,
+      amountResourceId = R.string.default_karma_amount,
+      textResourceId = R.string.karma,
+      modifier = modifier
+        .constrainAs(karmaItem) {
+          centerVerticallyTo(parent)
+          start.linkTo(parent.start)
+        }
+    )
+
+    Divider(
+      modifier = modifier
+        .width(1.dp)
+        .constrainAs(divider) {
+          centerVerticallyTo(karmaItem)
+          centerHorizontallyTo(parent)
+          height = Dimension.fillToConstraints
+        },
+      color = colors.onSurface.copy(alpha = .2f)
+    )
+
+    ProfileInfoItem(
+      iconAsset = Icons.Filled.ShoppingCart,
+      amountResourceId = R.string.default_reddit_age_amount,
+      textResourceId = R.string.reddit_age,
+      modifier = modifier
+        .constrainAs(ageItem) {
+          start.linkTo(divider.start)
+          centerVerticallyTo(parent)
+        }
+    )
+  }
 }
 
 @Composable
