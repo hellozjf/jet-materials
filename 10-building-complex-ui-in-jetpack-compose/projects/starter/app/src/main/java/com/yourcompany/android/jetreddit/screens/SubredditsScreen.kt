@@ -36,6 +36,8 @@ package com.yourcompany.android.jetreddit.screens
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -97,7 +99,18 @@ fun SubredditsScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun Subreddit(subredditModel: SubredditModel, modifier: Modifier = Modifier) {
-  //TODO add your code here
+  Card(
+    modifier = modifier
+      .size(120.dp)
+      .padding(
+        horizontal = 2.dp,
+        vertical = 4.dp
+      ),
+    backgroundColor = MaterialTheme.colors.surface,
+    shape = RoundedCornerShape(4.dp)
+  ) {
+    SubredditBody(subredditModel)
+  }
 }
 
 @Composable
