@@ -42,9 +42,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yourcompany.android.jetreddit.R
+import com.yourcompany.android.jetreddit.routing.Screen
 import com.yourcompany.android.jetreddit.viewmodel.MainViewModel
 
 private const val SEARCH_DELAY_MILLIS = 300L
@@ -60,13 +62,30 @@ fun ChooseCommunityScreen(
   //TODO Add your code here
 }
 
+@Preview(showBackground = true)
+@Composable
+fun SearchedCommunitiesPreview() {
+  Column {
+    SearchedCommunities(defaultCommunities, null, Modifier)
+  }
+}
+
 @Composable
 fun SearchedCommunities(
   communities: List<String>,
   viewModel: MainViewModel?,
   modifier: Modifier = Modifier
 ) {
-  //TODO Add your code here
+  communities.forEach {
+    Community(
+      modifier = modifier,
+      text = it,
+      onCommunityClicked = {
+        viewModel?.selectedCommunity?.postValue(it)
+        Screen.JetRedditRouter.goBack()
+      }
+    )
+  }
 }
 
 @Composable
