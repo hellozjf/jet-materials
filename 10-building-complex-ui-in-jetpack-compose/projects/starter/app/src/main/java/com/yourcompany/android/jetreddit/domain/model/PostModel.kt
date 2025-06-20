@@ -50,15 +50,15 @@ data class PostModel(
   companion object {
 
     val DEFAULT_POST = PostModel(
-      "johndoe",
-      "androiddev",
-      "Watch this awesome Jetpack Compose course!",
-      "",
-      "5614",
-      "523",
-      PostType.IMAGE,
-      "4h",
-      R.drawable.compose_course
+      username = "johndoe",
+      subreddit = "androiddev",
+      title = "Watch this awesome Jetpack Compose course!",
+      text = "",
+      likes = "5614",
+      comments = "523",
+      type = PostType.IMAGE,
+      postedTime = "4h",
+      image = R.drawable.compose_course
     )
   }
 }

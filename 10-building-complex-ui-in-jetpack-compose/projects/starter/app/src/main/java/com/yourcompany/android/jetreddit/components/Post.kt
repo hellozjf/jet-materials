@@ -37,12 +37,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -79,7 +81,51 @@ fun Post(post: PostModel, content: @Composable () -> Unit = {}) {
 
 @Composable
 fun Header(post: PostModel) {
-  //TODO add your code here
+  Column(
+    modifier = Modifier
+     .fillMaxWidth()
+  ) {
+    Row(
+      modifier = Modifier.padding(start = 16.dp)
+    ) {
+      Image(
+        modifier = Modifier
+          .size(40.dp)
+          .clip(CircleShape),
+        bitmap = ImageBitmap.imageResource(id = R.drawable.subreddit_placeholder),
+        contentDescription = stringResource(id = R.string.subreddits)
+      )
+      Spacer(modifier = Modifier.width(8.dp))
+      Column(
+        modifier = Modifier.weight(1f)
+      ) {
+        // deepseek 告诉我，默认字体大小是 14sp
+        Text(
+          text = stringResource(
+            id = R.string.subreddit_header,
+            post.subreddit),
+          fontWeight = FontWeight.Medium,
+          color = MaterialTheme.colors.primaryVariant
+        )
+        Text(
+          text = stringResource(
+            id = R.string.post_header,
+            post.username, post.postedTime
+          ),
+          color = Color.Gray
+        )
+      }
+      MoreActionsMenu()
+    }
+
+    Title(text = post.title)
+  }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MoreActionsMenuPreview() {
+  MoreActionsMenu()
 }
 
 @Composable
@@ -87,7 +133,9 @@ fun MoreActionsMenu() {
   var expanded by remember { mutableStateOf(false) }
   Box(modifier = Modifier.wrapContentSize(Alignment.TopStart)) {
 
-    IconButton(onClick = { expanded = true }) {
+    IconButton(
+      onClick = { expanded = true }
+    ) {
       Icon(
         imageVector = Icons.Default.MoreVert,
         tint = Color.DarkGray,
@@ -234,7 +282,7 @@ fun ArrowButtonPreview() {
   ArrowButton({}, R.drawable.ic_baseline_arrow_upward_24)
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {
   Column {
