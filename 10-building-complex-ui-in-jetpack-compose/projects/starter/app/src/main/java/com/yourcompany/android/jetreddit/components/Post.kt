@@ -253,7 +253,17 @@ fun VotingAction(
 
 @Composable
 fun ArrowButton(onClickAction: () -> Unit, arrowResourceId: Int) {
-  //TODO add your code here
+  IconButton(
+    modifier = Modifier.size(30.dp),
+    onClick = onClickAction
+  ) {
+    Icon(
+      modifier = Modifier.size(20.dp),
+      imageVector = ImageVector.vectorResource(arrowResourceId),
+      contentDescription = stringResource(id = R.string.upvote),
+      tint = Color.Gray
+    )
+  }
 }
 
 @Composable
@@ -276,10 +286,10 @@ fun PostAction(
   }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ArrowButtonPreview() {
-  ArrowButton({}, R.drawable.ic_baseline_arrow_upward_24)
+  ArrowButton({}, R.drawable.ic_baseline_arrow_downward_24)
 }
 
 @Preview(showBackground = true)
