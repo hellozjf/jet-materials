@@ -34,8 +34,17 @@
 package com.yourcompany.android.jetreddit.screens
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -60,6 +69,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.yourcompany.android.jetreddit.R
+import com.yourcompany.android.jetreddit.components.BackgroundText
 import com.yourcompany.android.jetreddit.models.SubredditModel
 
 val subreddits = listOf(
@@ -139,11 +149,13 @@ fun SubredditBody(subredditModel: SubredditModel, modifier: Modifier = Modifier)
       // 让一个组件的 top 和 bottom 都 linkTo 另一个组件的 bottom
       // 意味着这个组件的中心点会与另一个组件的 bottom 对齐
       // 这里 Icon 估计是有最小高度 24dp，所以它才没有被压成没有
-      modifier = modifier.constrainAs(icon) {
-        top.linkTo(backgroundImage.bottom)
-        bottom.linkTo(backgroundImage.bottom)
-        centerHorizontallyTo(parent)
-      }.zIndex(1f)
+      modifier = modifier
+        .constrainAs(icon) {
+          top.linkTo(backgroundImage.bottom)
+          bottom.linkTo(backgroundImage.bottom)
+          centerHorizontallyTo(parent)
+        }
+        .zIndex(1f)
     )
 
     SubredditName(
@@ -259,7 +271,16 @@ fun Community(
 
 @Composable
 fun Communities(modifier: Modifier = Modifier) {
-  //TODO add your code here
+  Column {
+    mainCommunities.forEach {
+      Community(text = stringResource(it))
+    }
+    Spacer(modifier = modifier.height(4.dp))
+    BackgroundText(stringResource(R.string.communities))
+    communities.forEach {
+      Community(text = stringResource(it))
+    }
+  }
 }
 
 @Preview
@@ -284,10 +305,10 @@ fun CommunityPreview() {
   )
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun CommunitiesPreview() {
-  Column {
-    Communities()
-  }
+  //Column {
+  Communities()
+  //}
 }
