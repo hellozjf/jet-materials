@@ -248,7 +248,18 @@ fun VotingAction(
   onUpVoteAction: () -> Unit,
   onDownVoteAction: () -> Unit
 ) {
-  //TODO add your code here
+  Row(
+    verticalAlignment = Alignment.CenterVertically
+  ) {
+    ArrowButton(onUpVoteAction, R.drawable.ic_baseline_arrow_upward_24)
+    Text(
+      text = text,
+      fontWeight = FontWeight.Medium,
+      color = Color.Gray,
+      fontSize = 12.sp
+    )
+    ArrowButton(onDownVoteAction, R.drawable.ic_baseline_arrow_downward_24)
+  }
 }
 
 @Composable
@@ -300,7 +311,7 @@ fun HeaderPreview() {
   }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun VotingActionPreview() {
   VotingAction("555", {}, {})
