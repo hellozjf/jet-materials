@@ -50,6 +50,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.yourcompany.android.jetreddit.R
 import com.yourcompany.android.jetreddit.models.SubredditModel
 
@@ -100,7 +102,56 @@ fun Subreddit(subredditModel: SubredditModel, modifier: Modifier = Modifier) {
 
 @Composable
 fun SubredditBody(subredditModel: SubredditModel, modifier: Modifier = Modifier) {
-  //TODO add your code here
+  ConstraintLayout(
+    modifier = modifier
+      .fillMaxSize()
+      .background(color = MaterialTheme.colors.surface)
+  ) {
+    val (backgroundImage, icon, name, members, description) = createRefs()
+
+    SubredditImage(
+      modifier = modifier.constrainAs(backgroundImage) {
+        centerHorizontallyTo(parent)
+        top.linkTo(parent.top)
+      }
+    )
+
+
+    SubredditIcon(
+      // 让一个组件的 top 和 bottom 都 linkTo 另一个组件的 bottom
+      // 意味着这个组件的中心点会与另一个组件的 bottom 对齐
+      // 这里 Icon 估计是有最小高度 24dp，所以它才没有被压成没有
+      modifier = modifier.constrainAs(icon) {
+        top.linkTo(backgroundImage.bottom)
+        bottom.linkTo(backgroundImage.bottom)
+        centerHorizontallyTo(parent)
+      }.zIndex(1f)
+    )
+
+    SubredditName(
+      modifier = modifier.constrainAs(name) {
+        top.linkTo(icon.bottom)
+        centerHorizontallyTo(parent)
+      },
+      nameStringRes = subredditModel.nameStringRes
+    )
+
+    SubredditMembers(
+      modifier = modifier.constrainAs(members) {
+        top.linkTo(name.bottom)
+        centerHorizontallyTo(parent)
+      },
+      membersStringRes = subredditModel.membersStringRes
+    )
+
+    SubredditDescription(
+      modifier = modifier.constrainAs(description) {
+        top.linkTo(members.bottom)
+        centerHorizontallyTo(parent)
+      },
+      descriptionStringRes = subredditModel.descriptionStringRes
+    )
+  }
 }
 
 @Composable
