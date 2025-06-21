@@ -38,7 +38,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -48,6 +50,9 @@ import androidx.compose.ui.unit.sp
 import com.yourcompany.android.jetreddit.R
 import com.yourcompany.android.jetreddit.routing.Screen
 import com.yourcompany.android.jetreddit.viewmodel.MainViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 
 private const val SEARCH_DELAY_MILLIS = 300L
 
@@ -59,7 +64,57 @@ fun ChooseCommunityScreen(
   modifier: Modifier = Modifier,
   onBackSelected: () -> Unit
 ) {
-  //TODO Add your code here
+  val scope = rememberCoroutineScope()
+  val communities: List<String> by viewModel.subreddits.observeAsState(emptyList())
+  var searchedText by remember { mutableStateOf("") }
+  var currentJob by remember { mutableStateOf<Job?>(null) }
+  val activeColor = MaterialTheme.colors.onSurface
+
+  // deepseek 告诉我，这个其实就是开了一个协程，进行初始化工作
+  LaunchedEffect(Unit) {
+    // 我看了一下代码，这个就是用给定的关键字去查找满足条件的社区
+    // 结果会保存在 viewModel.subreddits 中，然后相关观察者就会被通知
+    // 并进行相应操作
+    viewModel.searchCommunities(searchedText)
+  }
+
+  Column {
+    ChooseCommunityTopBar(onBackSelected = onBackSelected)
+    TextField(
+      modifier = modifier
+        .fillMaxWidth()
+        .padding(horizontal = 8.dp),
+      value = searchedText,
+      onValueChange = {
+        searchedText = it
+        currentJob?.cancel()
+        currentJob = scope.async {
+          // 这个 delay 是用来防止频繁搜索的，因为搜索是一个耗时操作
+          // 所以我们需要在用户输入完成后，再进行搜索
+          delay(SEARCH_DELAY_MILLIS)
+          viewModel.searchCommunities(searchedText)
+        }
+      },
+      leadingIcon = {
+        Icon(
+          imageVector = Icons.Default.Search,
+          contentDescription = stringResource(id = R.string.search)
+        )
+      },
+      label = {
+        Text(
+          text = stringResource(id = R.string.search),
+        )
+      },
+      colors = TextFieldDefaults.outlinedTextFieldColors(
+        focusedBorderColor = activeColor,
+        focusedLabelColor = activeColor,
+        cursorColor = activeColor,
+        backgroundColor = MaterialTheme.colors.surface
+      )
+    )
+    SearchedCommunities(communities, viewModel, modifier)
+  }
 }
 
 @Preview(showBackground = true)
